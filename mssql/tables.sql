@@ -1,4 +1,3 @@
-
 CREATE TABLE [dbo].[bulletin](
 	[bulletin_id] [int] IDENTITY(1,1) NOT NULL,
 	
@@ -40,11 +39,21 @@ CREATE TABLE [dbo].[bulletin](
     
     insert_time datetime, 
     modify_time datetime,  
-    is_deleted integer DEFAULT 0
-	)
-GO
+    is_deleted integer DEFAULT 0,
+	PRIMARY KEY ([bulletin_id])
+	);
 
---- Application
+CREATE TABLE [dbo].[Group](
+	[Id] [int] IDENTITY(1,1) NOT NULL,
+	[Name] [nvarchar](250) NOT NULL,
+	[Description] [nvarchar](500) NULL,
+	[TagName1] [nvarchar](250) NULL,
+	[TagName2] [nvarchar](250) NULL,
+	[TagName3] [nvarchar](250) NULL,
+	Is_Deleted integer DEFAULT 0,
+	PRIMARY KEY (Id),
+	);
+
 CREATE TABLE [dbo].[Item](
 	[Id] [int] IDENTITY(1,1) NOT NULL,
 	[Name] [nvarchar](250) NOT NULL,
@@ -53,9 +62,11 @@ CREATE TABLE [dbo].[Item](
 	[TagName1] [nvarchar](250) NULL,
 	[TagName2] [nvarchar](250) NULL,
 	[TagName3] [nvarchar](250) NULL,
-	Is_Deleted integer 0
-	)
-GO
+	Is_Deleted integer DEFAULT 0,
+	PRIMARY KEY (Id),
+	CONSTRAINT FK_ItemGroup FOREIGN KEY (GroupId) REFERENCES [Group](Id)
+	);
+
 
 CREATE TABLE [dbo].[Contact](
 	[Id] [int] IDENTITY(1,1) NOT NULL,
@@ -65,9 +76,9 @@ CREATE TABLE [dbo].[Contact](
 	[TagName1] [nvarchar](250) NULL,
 	[TagName2] [nvarchar](250) NULL,
 	[TagName3] [nvarchar](250) NULL,
-	Is_Deleted integer 0
-	)
-GO
+	Is_Deleted integer DEFAULT 0,
+	PRIMARY KEY (Id)
+	);
 
 CREATE TABLE [dbo].[CategorizedView](
 	[Id] [int] IDENTITY(1,1) NOT NULL,
@@ -79,18 +90,10 @@ CREATE TABLE [dbo].[CategorizedView](
 	[ItemId] [int] NULL,
 	[ContactId] [int] NULL,
 	[BeginTime] [datetime] NOT NULL,
-	[EndTime] [datetime] NOT NULL
-	)
-GO
+	[EndTime] [datetime] NOT NULL,
+	PRIMARY KEY (Id),
+	CONSTRAINT FK_CGroup FOREIGN KEY (GroupId) REFERENCES [Group](Id),
+	CONSTRAINT FK_CItem FOREIGN KEY (ItemId) REFERENCES [Item](Id),
+	CONSTRAINT FK_CContact FOREIGN KEY (ContactId) REFERENCES [Contact](Id)
+	);
 
-CREATE TABLE [dbo].[Group](
-	[Id] [int] IDENTITY(1,1) NOT NULL,
-	[Name] [nvarchar](250) NOT NULL,
-	[Description] [nvarchar](500) NULL,
-	[GroupId] [int] NULL,
-	[TagName1] [nvarchar](250) NULL,
-	[TagName2] [nvarchar](250) NULL,
-	[TagName3] [nvarchar](250) NULL,
-	Is_Deleted integer 0
-	)
-GO
