@@ -4,9 +4,8 @@ This is a database application using Grafana observability platform. It is possi
 
 ## FIRST
 
-* Configure system environment on Windows OS
-* Download Pyhton from visualstudio code extensions
-* Download npm from visualstudio code extensions
+* Configure mssql db and launch sql commands
+* Download and setup the grafana from https://grafana.com/grafana/download
 
 ## SECOND
 
