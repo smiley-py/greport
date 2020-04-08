@@ -13,16 +13,19 @@ This is a database application using Grafana observability platform. It is possi
 	execute tables.sql
 	execute datas.sql
 	execute trigers.sql
-	execute getwebapi.sql
 	execute functions.sql
-	
-	execute exportcsv.sql
-	execute sendmail.sql
-	
-	execute procedures.sql
 
+	execute procedures.sql
 	
-	
+```
+
+
+## THIRD
+
+```
+	execute getwebapi.sql #SET SCHEDULED JOB
+	execute exportcsv.sql #SET SCHEDULED JOB
+	execute sendmail.sql #SET SCHEDULED JOB
 	
 ```
 
