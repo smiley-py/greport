@@ -29,10 +29,10 @@ AS
 				Left JOIN [Item] ON([CategorizedView].[ItemId]=[Item].[Id]) 
 				where ([CategorizedView].[BeginTime] >= @startdate and [CategorizedView].[BeginTime] < DATEADD(day,1,@enddate) 
 					and (
-						([Item].[Name] like '%'+@app+'%') or
-						([Item].[TagName1] like '%'+@app+'%') or
-						([Item].[TagName2] like '%'+@app+'%') or
-						([Item].[TagName3] like '%'+@app+'%')
+						([Item].[Name] like '%'+@item+'%') or
+						([Item].[TagName1] like '%'+@item+'%') or
+						([Item].[TagName2] like '%'+@item+'%') or
+						([Item].[TagName3] like '%'+@item+'%')
 						)
 					)
 			)
