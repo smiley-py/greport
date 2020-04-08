@@ -6,6 +6,7 @@ This is a database application using Grafana observability platform. It is possi
 
 * Configure mssql db and launch sql commands
 * Download and setup the grafana from https://grafana.com/grafana/download
+* Or you can use from https://play.grafana.org/
 
 ## SECOND
 
