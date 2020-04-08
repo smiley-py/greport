@@ -2,7 +2,7 @@ CREATE FUNCTION [dbo].[get_bulletins_with_groups](@startdate datetime, @enddate 
 returns table
 AS	
 	return( 
-			Select * from [bulletin] where [state]='Done' and [is_deleted]=0 and [Id] in 
+			Select * from [bulletin] where [state]='Done' and [is_deleted]=0 and [bulletin_id] in 
 			(Select Distinct(BulletinId) from [CategorizedView] 
 				Left JOIN [Group] ON([CategorizedView].[GroupId]=[Group].[Id]) 
 				Left JOIN [Item] ON([CategorizedView].[ItemId]=[Item].[Id]) 
@@ -23,7 +23,7 @@ CREATE FUNCTION [dbo].[get_bulletins_with_items](@startdate datetime, @enddate d
 returns table
 AS	
 	return( 
-			Select * from [bulletin] where [state]='Done' and [is_deleted]=0 and [Id] in 
+			Select * from [bulletin] where [state]='Done' and [is_deleted]=0 and [bulletin_id] in 
 			(Select Distinct(BulletinId) from [CategorizedView] 
 				Left JOIN [Group] ON([CategorizedView].[GroupId]=[Group].[Id]) 
 				Left JOIN [Item] ON([CategorizedView].[ItemId]=[Item].[Id]) 
@@ -43,7 +43,7 @@ CREATE FUNCTION [dbo].[get_bulletins_with_contacts](@startdate datetime, @enddat
 returns table
 AS	
 	return( 
-			Select * from [bulletin] where [state]='Done' and [is_deleted]=0 and [Id] in 
+			Select * from [bulletin] where [state]='Done' and [is_deleted]=0 and [bulletin_id] in 
 			(Select Distinct(BulletinId) from [CategorizedView]
 				Left JOIN [Contact] ON([CategorizedView].[ContactId]=[Contact].[Id]) 
 				where ([CategorizedView].[BeginTime] >= @startdate and [CategorizedView].[BeginTime] < DATEADD(day,1,@enddate) 
@@ -82,14 +82,14 @@ BEGIN
 	
 	set @totaldate= DATEDIFF(day,@startdate,@enddate)+1;
 	
-	DECLARE crs CURSOR FOR SELECT [Id],[Name] FROM [Group] where [Status]=1 order by [Name];     
+	DECLARE crs CURSOR FOR SELECT [Id],[Name] FROM [Group] where [Is_Deleted]=0 order by [Name];     
 	OPEN crs;     
 	FETCH NEXT FROM crs INTO @Id,@Name;  
 	WHILE @@FETCH_STATUS=0   
 		BEGIN 
 			   	
-			Select  @msum=isnull(sum(cast([duration] as int)),0),@mcount=Count(bulletin_id) from [bulletin] where  ([btype]='Planned Maintenance' or [btype]='Urgent Maintenance') and [bulletin_id] in (Select BulletinId from dbo.get_bulletins_with_groups(@startdate,@enddate,@Name)); 
-			Select  @osum=isnull(sum(cast([duration] as int)),0),@ocount=Count(bulletin_id) from [bulletin] where  [btype]='Outage' and [bulletin_id] in (Select BulletinId from dbo.get_bulletins_with_groups(@startdate,@enddate,@Name)); 
+			Select  @msum=isnull(sum(cast([duration] as int)),0),@mcount=Count(bulletin_id) from [bulletin] where  ([btype]='Planned Maintenance' or [btype]='Urgent Maintenance') and [bulletin_id] in (Select bulletin_id from dbo.get_bulletins_with_groups(@startdate,@enddate,@Name)); 
+			Select  @osum=isnull(sum(cast([duration] as int)),0),@ocount=Count(bulletin_id) from [bulletin] where  [btype]='Outage' and [bulletin_id] in (Select bulletin_id from dbo.get_bulletins_with_groups(@startdate,@enddate,@Name)); 
 						
 			set @availability=(((@totaldate*24)-(@osum/60.0))/(@totaldate*24))*100;
 			insert into @typetable (Name,SumMaintenance,SumOutage,CountMaintenance,CountOutage,[Availability]) values(@Name,@msum,@osum,@mcount,@ocount,@availability);
@@ -131,7 +131,7 @@ BEGIN
 	DECLARE crs CURSOR FOR 
 		SELECT [Item].[Id],[Group].[Name] as [Group],[Item].[Name] FROM [Item] 
 		JOIN [Group] ON ([Item].[GroupId]=[Group].[Id])
-		where [Is_Deleted]=0 order by [Name];     
+		where [Item].[Is_Deleted]=0 order by [Name];     
 	OPEN crs;     
 	FETCH NEXT FROM crs INTO @Id,@Group,@Name;  
 	WHILE @@FETCH_STATUS=0   
@@ -143,11 +143,11 @@ BEGIN
 
 				Select @msum=isnull(sum(cast([duration] as int)),0), @mcount=Count(bulletin_id) from [bulletin] 
 				where [state]='Done' and ([btype]='Planned Maintenance' or [btype]='Urgent Maintenance') and ([begin_time] >= @startdate and [begin_time] < DATEADD(day,1,@enddate))
-				and [bulletin_id] in (Select BulletinId from dbo.get_bulletins_with_items(@startdate,@enddate,@Name));
+				and [bulletin_id] in (Select bulletin_id from dbo.get_bulletins_with_items(@startdate,@enddate,@Name));
 				
 				Select @msum=isnull(sum(cast([duration] as int)),0), @mcount=Count(bulletin_id) from [bulletin] 
 				where [state]='Done' and ([btype]='Outage') and ([begin_time] >= @startdate and [begin_time] < DATEADD(day,1,@enddate))
-				and [bulletin_id] in (Select BulletinId from dbo.get_bulletins_with_items(@startdate,@enddate,@Name));
+				and [bulletin_id] in (Select bulletin_id from dbo.get_bulletins_with_items(@startdate,@enddate,@Name));
 				
 			set @availability=(((@totaldate*24)-(@osum/60.0))/(@totaldate*24))*100;
 			insert into @typetable ([Group],Name,SumMaintenance,SumOutage,CountMaintenance,CountOutage,[Availability]) values(@Group,@Name,@msum,@osum,@mcount,@ocount,@availability);
@@ -201,11 +201,11 @@ BEGIN
 			
 				Select @msum=isnull(sum(cast([duration] as int)),0), @mcount=Count(bulletin_id) from [bulletin] 
 				where [state]='Done' and ([btype]='Planned Maintenance' or [btype]='Urgent Maintenance') and ([begin_time] >= @startdate and [begin_time] < DATEADD(day,1,@enddate))
-				and [bulletin_id] in (Select BulletinId from dbo.get_bulletins_with_contacts(@startdate,@enddate,@Name));
+				and [bulletin_id] in (Select bulletin_id from dbo.get_bulletins_with_contacts(@startdate,@enddate,@Name));
 				
 				Select @msum=isnull(sum(cast([duration] as int)),0), @mcount=Count(bulletin_id) from [bulletin] 
 				where [state]='Done' and ([btype]='Outage') and ([begin_time] >= @startdate and [begin_time] < DATEADD(day,1,@enddate))
-				and [bulletin_id] in (Select BulletinId from dbo.get_bulletins_with_contacts(@startdate,@enddate,@Name));							
+				and [bulletin_id] in (Select bulletin_id from dbo.get_bulletins_with_contacts(@startdate,@enddate,@Name));							
 
 				
 			set @availability=(((@totaldate*24)-(@osum/60.0))/(@totaldate*24))*100;

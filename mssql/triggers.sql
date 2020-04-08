@@ -58,7 +58,7 @@ as
 		BEGIN    
 			if ((@TagName1 is null) or (@TagName1 = ''))
 			BEGIN
-				set @TagName='Empty01';
+				set @TagName1='Empty01';
 			END
 			if ((@TagName2 is null) or (@TagName2 = ''))
 				BEGIN
@@ -95,7 +95,7 @@ as
 							(([detail] like '%'+@NameItem+'%') or ([effect] like '%'+@NameItem+'%') 
 							or ([detail] like '%'+@TagNameItem1+'%') or ([Effect] like '%'+@TagNameItem1+'%')
 							or ([detail] like '%'+@TagNameItem2+'%') or ([Effect] like '%'+@TagName2+'%')
-							or ([detail] like '%'+@TagNameItem3+'%') or ([Effect] like '%'+@TagNameItem3+'%'))) 
+							or ([detail] like '%'+@TagNameItem3+'%') or ([Effect] like '%'+@TagNameItem3+'%')) 
 							and [state]='Done' and [is_deleted]=0 and [bulletin_id]=@InsertedId;
 
 						OPEN crsBlt;     
@@ -122,7 +122,7 @@ as
 										END
 										
 										
-									insert into [CategorizedView] (BulletinId,Code,Duration,[Type],[GroupId],[ItemId],[ContacId],[BeginTime],[EndTime])  values(@IdBlt,@CodeBlt,@DurationBlt,@TypeBlt,@Id,@IdItem,@IdContact,@BeginTimeBlt,@EndTimeBlt);
+									insert into [CategorizedView] (BulletinId,Code,Duration,[Type],[GroupId],[ItemId],[ContactId],[BeginTime],[EndTime])  values(@IdBlt,@CodeBlt,@DurationBlt,@TypeBlt,@Id,@IdItem,@IdContact,@BeginTimeBlt,@EndTimeBlt);
 							
 							
 									FETCH NEXT FROM crsContact INTO @IdContact,@NameContact,@TagNameContact1,@TagNameContact2,@TagNameContact3;  
@@ -200,7 +200,7 @@ as
 		BEGIN    
 			if ((@TagName1 is null) or (@TagName1 = ''))
 			BEGIN
-				set @TagName='Empty01';
+				set @TagName1='Empty01';
 			END
 			if ((@TagName2 is null) or (@TagName2 = ''))
 				BEGIN
@@ -237,7 +237,7 @@ as
 							(([detail] like '%'+@NameItem+'%') or ([effect] like '%'+@NameItem+'%') 
 							or ([detail] like '%'+@TagNameItem1+'%') or ([Effect] like '%'+@TagNameItem1+'%')
 							or ([detail] like '%'+@TagNameItem2+'%') or ([Effect] like '%'+@TagName2+'%')
-							or ([detail] like '%'+@TagNameItem3+'%') or ([Effect] like '%'+@TagNameItem3+'%'))) 
+							or ([detail] like '%'+@TagNameItem3+'%') or ([Effect] like '%'+@TagNameItem3+'%'))
 							and [state]='Done' and [is_deleted]=0 and [bulletin_id]=@InsertedId;
 
 						OPEN crsBlt;     
@@ -264,7 +264,7 @@ as
 										END
 										
 										
-									insert into [CategorizedView] (BulletinId,Code,Duration,[Type],[GroupId],[ItemId],[ContacId],[BeginTime],[EndTime])  values(@IdBlt,@CodeBlt,@DurationBlt,@TypeBlt,@Id,@IdItem,@IdContact,@BeginTimeBlt,@EndTimeBlt);
+									insert into [CategorizedView] (BulletinId,Code,Duration,[Type],[GroupId],[ItemId],[ContactId],[BeginTime],[EndTime])  values(@IdBlt,@CodeBlt,@DurationBlt,@TypeBlt,@Id,@IdItem,@IdContact,@BeginTimeBlt,@EndTimeBlt);
 							
 							
 									FETCH NEXT FROM crsContact INTO @IdContact,@NameContact,@TagNameContact1,@TagNameContact2,@TagNameContact3;  
