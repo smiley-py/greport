@@ -138,7 +138,7 @@ as
 						
 						
 
-					FETCH NEXT FROM crsApp INTO @IdItem,@NameItem,@TagNameItem1,@TagNameItem2,@TagNameItem3;   
+					FETCH NEXT FROM crsItem INTO @IdItem,@NameItem,@TagNameItem1,@TagNameItem2,@TagNameItem3;   
 				END
 				CLOSE crsItem;  
 				DEALLOCATE crsItem;

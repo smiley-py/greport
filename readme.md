@@ -24,9 +24,9 @@ This is a database application using Grafana observability platform. It is possi
 ## THIRD
 
 ```
-	execute getwebapi.sql # SET SCHEDULED JOB
-	execute exportcsv.sql # SET SCHEDULED JOB
-	execute sendmail.sql # SET SCHEDULED JOB
+	execute job_getdatas.sql # SET SCHEDULED JOB
+	execute job_exportcsv.sql # SET SCHEDULED JOB
+	execute job_sendmail.sql # SET SCHEDULED JOB
 	
 ```
 
