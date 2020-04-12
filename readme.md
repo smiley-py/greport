@@ -37,10 +37,10 @@ This is a database application using Grafana observability platform. It is possi
 
 ## THIRD
 
-* services.msc start sql browser start
-* open udp 1434 in firewall
-* sql configuration open netwok configuration enable tcp/ip
-* in grafana add sql datasource
+* Services.msc start sql browser start
+* Open udp 1434 in firewall
+* Sql configuration open netwok configuration enable tcp/ip
+* In grafana add sql datasource
 
 ```
 	select id,btype,[state],code,title,detail,begin_time from dbo.info_bulletin_table();
