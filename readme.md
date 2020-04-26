@@ -1,6 +1,6 @@
-## DESCRIPTION
+## greport
 
-This is a database application using Grafana observability platform. It is possible to visualize complex dashboards.
+This is a database application using Grafana observability platform with bulletin-api-db. It is possible to visualize complex dashboards.
 
 ## FIRST
 
